@@ -1,0 +1,37 @@
+{
+  "name": "alert.rit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "service:install": "node ./service/install.ts",
+    "service:uninstall": "node ./service/uninstall.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tsconfig/node23": "^23.0.0",
+    "@types/node": "^22.13.5",
+    "@types/node-notifier": "^8.0.5",
+    "@types/node-windows": "^0.1.6",
+    "typescript": "5.8.1-rc"
+  },
+  "dependencies": {
+    "@logtape/logtape": "^0.9.0",
+    "@vue/reactivity": "^3.5.13",
+    "@xan105/nodert": "^2.2.1",
+    "eventsource": "^3.0.5",
+    "node-notifier": "^10.0.1",
+    "node-windows": "1.0.0-beta.8",
+    "powertoast": "^3.0.0",
+    "unstorage": "^1.15.0"
+  },
+  "packageManager": "pnpm@10.3.0+sha512.ee592eda8815a8a293c206bb0917c4bb0ff274c50def7cbc17be05ec641fc2d1b02490ce660061356bd0d126a4d7eb2ec8830e6959fb8a447571c631d5a2442d",
+  "pnpm": {
+    "patchedDependencies": {
+      "powertoast": "patches/powertoast.patch"
+    }
+  }
+}

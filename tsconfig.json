@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "@tsconfig/node23/tsconfig.json"
+  ],
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+    "lib": [
+      "dom"
+    ]
+  }
+}

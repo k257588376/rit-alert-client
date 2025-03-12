@@ -1,0 +1,1 @@
+$env:NODE_ENV = 'production'; start node -Args "C:\Users\e.kulbeda\alert.rit\index.ts" -RedirectStandardOutput "C:\Users\e.kulbeda\alert.rit\output.log" -RedirectStandardError "C:\Users\e.kulbeda\alert.rit\error.log" -WindowStyle Hidden
