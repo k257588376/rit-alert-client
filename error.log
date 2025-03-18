@@ -1,10 +1,2 @@
-(node:14376) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
+(node:7824) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
-ReferenceError: counter is not defined
-    at Timeout._onTimeout (file:///C:/Users/e.kulbeda/alert.rit/index.ts:134:3)
-    at listOnTimeout (node:internal/timers:614:17)
-    at process.processTimers (node:internal/timers:549:7)
-ReferenceError: counter is not defined
-    at Timeout._onTimeout (file:///C:/Users/e.kulbeda/alert.rit/index.ts:134:3)
-    at listOnTimeout (node:internal/timers:614:17)
-    at process.processTimers (node:internal/timers:549:7)

@@ -10,17 +10,25 @@ import {
 import { createEventHook } from "./createEventHook.ts";
 import type { AccessGrantedEvent } from "./types.ts";
 import { ErrorEvent, EventSource } from "eventsource";
+import { getLogger } from '@logtape/logtape';
+
+
+const log = getLogger(["rit.alert", "useEventSource"]);
 
 export const useEventSource = (url: MaybeRefOrGetter<string>) => {
   const initES = () => new EventSource(toValue(url));
   const es = ref(initES());
 
   watch(toRef(url), () => {
+    log.debug`Recreating EventSource for ${toValue(url)}`;
     es.value.close();
     es.value = initES();
   });
 
-  onScopeDispose(()=> es.value.close())
+  onScopeDispose(() => {
+    log.debug`Closing EventSource on ScopeDispose`;
+    es.value.close()
+  })
 
   const { on: onAccessGranted, trigger: triggerAccessGranted } =
     createEventHook<AccessGrantedEvent>();
