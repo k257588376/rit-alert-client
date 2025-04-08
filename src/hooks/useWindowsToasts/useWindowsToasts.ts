@@ -1,14 +1,21 @@
-import { getLogger } from "@logtape/logtape";
 import { onScopeDispose } from "@vue/reactivity";
 import { spawn } from "child_process";
 import { EOL } from "os";
 import path from "path";
 import { type Toast, toXmlString } from "powertoast";
+import { logger } from "../../logger.ts";
 
-const log = getLogger(["rit.alert", "useNotifications"]);
+const log = logger.getChild("useNotifications");
 
+export type WindowsNotificationOptions = Omit<
+  Toast["options"],
+  "expiration"
+> & {
+  // true by default
+  transient?: boolean;
+};
 
-export const useNotifications = () => {
+export const useWindowsNotifications = () => {
   const toast = spawn("pwsh", [
     "-NoProfile",
     "-NoLogo",
@@ -34,11 +41,13 @@ export const useNotifications = () => {
     toast.disconnect();
   });
 
-  return function notify(options: Toast["options"]) {
+  return function notify(options: WindowsNotificationOptions) {
     toast.stdin.write(
       toXmlString(options) +
         EOL +
-        new Date(options.expiration ?? 0).toISOString() +
+        new Date(
+          options.transient !== false ? Date.now() + 10_000 : 0
+        ).toISOString() +
         EOL
     );
   };

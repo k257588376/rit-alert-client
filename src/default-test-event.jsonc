@@ -1,0 +1,20 @@
+{
+  "scannerId": 1,
+  "eventDate": "2025-03-25T09:50:40-04:00",
+  "user": {
+    "id": 1,
+    "firstName": "Тест",
+    "lastName": "Тестов",
+    "surname": "Тестович",
+    "fullName": "Тестов Т. Т."
+  },
+  "door": {
+    "id": 5,
+    "name": "105",
+    "side": "Enter"
+  },
+  "tags": [
+    "105",
+    "enterSide"
+  ]
+}

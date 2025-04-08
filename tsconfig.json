@@ -9,7 +9,9 @@
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,
     "lib": [
-      "dom"
+      "dom",
+      "ES2024",
+      "ESNext.Collection"
     ]
   }
 }

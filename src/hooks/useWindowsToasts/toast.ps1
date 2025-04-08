@@ -34,6 +34,8 @@ function New-ToastXml($message) {
 while ($true) {
   $line = [Console]::In.ReadLine()
   if ($null -eq $line) { break }
+
+  $line = $line.Replace("\n", "`n")
     
   # Hide previous notification if one exists.
   if ($null -ne $lastToast) {

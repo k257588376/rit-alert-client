@@ -7,13 +7,12 @@ import {
   watch,
   type MaybeRefOrGetter,
 } from "@vue/reactivity";
-import { createEventHook } from "./createEventHook.ts";
-import type { AccessGrantedEvent } from "./types.ts";
+import { createEventHook } from "../utils/createEventHook.ts";
 import { ErrorEvent, EventSource } from "eventsource";
-import { getLogger } from '@logtape/logtape';
+import { logger } from "../logger.ts";
+import type { AccessGrantedEvent } from './useConfig.ts';
 
-
-const log = getLogger(["rit.alert", "useEventSource"]);
+const log = logger.getChild("useEventSource");
 
 export const useEventSource = (url: MaybeRefOrGetter<string>) => {
   const initES = () => new EventSource(toValue(url));
@@ -27,8 +26,8 @@ export const useEventSource = (url: MaybeRefOrGetter<string>) => {
 
   onScopeDispose(() => {
     log.debug`Closing EventSource on ScopeDispose`;
-    es.value.close()
-  })
+    es.value.close();
+  });
 
   const { on: onAccessGranted, trigger: triggerAccessGranted } =
     createEventHook<AccessGrantedEvent>();
@@ -49,13 +48,11 @@ export const useEventSource = (url: MaybeRefOrGetter<string>) => {
   });
 
   const { on: onConnected, trigger: triggerConnected } = createEventHook();
-
   effect(() => {
     es.value.addEventListener("open", () => triggerConnected());
   });
 
   const { on: onError, trigger: triggerError } = createEventHook<ErrorEvent>();
-
   effect(() => {
     es.value.addEventListener("error", (event) => {
       if (event instanceof ErrorEvent) {
@@ -65,7 +62,6 @@ export const useEventSource = (url: MaybeRefOrGetter<string>) => {
   });
 
   const { on: onAlert, trigger: triggerAlert } = createEventHook<string>();
-
   effect(() => {
     es.value.addEventListener("alert", (event) => triggerAlert(event.data));
   });
@@ -76,5 +72,5 @@ export const useEventSource = (url: MaybeRefOrGetter<string>) => {
     onConnected,
     onError,
     onAlert,
-  }
+  };
 };

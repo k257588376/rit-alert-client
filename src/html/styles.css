@@ -1,0 +1,69 @@
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+* {
+  color-scheme: light dark;
+  box-sizing: border-box;
+}
+
+#saveButton,
+#testerButton,
+#sseButton {
+  padding: 0.5rem 1rem;
+  z-index: 10;
+  font-size: 13px;
+}
+
+#pid {
+  padding: 0.5rem 1rem;
+  z-index: 10;
+  background: white;
+  border: 2px #eee solid;
+  font-family: monospace;
+
+  @media (prefers-color-scheme: dark) {
+    background: black;
+    border-color: dimgray;
+    color: #e0e0e0;
+  }
+}
+
+#saved {
+  position: absolute;
+  text-align: center;
+  z-index: 10;
+  color: #558b2f;
+  background: #f1f8e9;
+  border: 2px #dcedc8 solid;
+  align-content: center;
+  font-size: 14px;
+  pointer-events: none;
+  user-select: none;
+  display: none;
+  inset: 0;
+  translate: 0 -120%;
+  opacity: 0;
+
+  @media (prefers-color-scheme: dark) {
+    background: #1b5e20;
+    border-color: #2e7d32;
+    color: #e8f5e9;
+  }
+}
+
+#container {
+  height: 100dvh;
+  width: 100dvw;
+}
+
+#bottombar {
+  position: fixed;
+  bottom: 50px;
+  right: 4em;
+  z-index: 10;
+  display: flex;
+  gap: 0.5rem;
+}
