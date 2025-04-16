@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-window
 import { setupEditor } from "./editor.js";
 const save = async () => {
   const res = await fetch("/save", {
@@ -15,7 +16,7 @@ const save = async () => {
       { opacity: 1, display: "block" },
       { opacity: 0, display: "block" },
     ],
-    { duration: 1000, easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)" }
+    { duration: 1000, easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)" },
   );
 };
 

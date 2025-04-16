@@ -1,17 +1,17 @@
-import { Hono } from "hono";
-import { serve } from "@hono/node-server";
 import {
+  type MaybeRefOrGetter,
   onScopeDispose,
   ref,
   toValue,
-  type MaybeRefOrGetter,
 } from "@vue/reactivity";
-import { html, raw } from "hono/html";
-import { serveStatic } from "@hono/node-server/serve-static";
 import { uneval } from "devalue";
+import { Hono } from "hono";
+import { html, raw } from "hono/html";
+import { serveStatic } from "hono/serve-static";
 import { applyEdits, modify } from "jsonc-parser";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { readFile } from "fs/promises";
+import process from "node:process";
 
 type UseServerOptions = {
   configValue: MaybeRefOrGetter<string>;
@@ -112,7 +112,7 @@ export const useConfigServer = ({
                 uneval(
                   await readFile(
                     path.resolve(
-                      import.meta.dirname,
+                      import.meta.dirname!,
                       "../default-test-event.jsonc"
                     ),
                     { encoding: "utf8" }
@@ -179,14 +179,36 @@ export const useConfigServer = ({
     return c.body(newConfig, 200);
   });
 
+  const getContent = async (path: string) => {
+    try {
+      if (isDir(path)) {
+        return null;
+      }
+      const file = await Deno.open(path);
+      return file.readable;
+    } catch (e) {
+      if (!(e instanceof Deno.errors.NotFound)) {
+        console.warn(`${e}`);
+      }
+      return null;
+    }
+  };
+  const isDir = (path: string) => {
+    try {
+      const stat = Deno.lstatSync(path);
+      return stat.isDirectory;
+    } catch {
+      // ignore
+    }
+  };
+
   app.use(
     "/static/*",
     serveStatic({
-      root: path.relative(
-        process.cwd(),
-        path.resolve(import.meta.dirname, "../html")
-      ),
-      rewriteRequestPath: (path) => path.replace(/^\/static/, "/"),
+      getContent,
+      isDir,
+      root: path.resolve(import.meta.dirname!, "../html"),
+      rewriteRequestPath: (path) => path.replace(/^\/static/, ""),
     })
   );
 
@@ -206,12 +228,9 @@ export const useConfigServer = ({
     return c.body(null, 200);
   });
 
-  const server = serve({
-    fetch: app.fetch,
-    port: 4579,
-  });
+  const server = Deno.serve({ port: 4579 }, app.fetch);
 
-  onScopeDispose(() => server.close());
+  onScopeDispose(() => server.shutdown());
 
   return {
     configServerUrl: ref("http://localhost:4579/"),

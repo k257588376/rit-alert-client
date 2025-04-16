@@ -1,6 +1,6 @@
-import * as monaco from "https://esm.sh/monaco-editor@0.50.0?bundle&target=node";
 import EditorWorker from "https://esm.sh/monaco-editor@0.50.0/esm/vs/editor/editor.worker?worker";
 import JsonWorker from "https://esm.sh/monaco-editor@0.50.0/esm/vs/language/json/json.worker?worker";
+import * as monaco from "https://esm.sh/monaco-editor@0.50.0?bundle&target=node";
 
 globalThis.monaco = monaco;
 globalThis.MonacoEnvironment = {
@@ -15,7 +15,6 @@ globalThis.MonacoEnvironment = {
 
 export function setupEditor(value, schema, onSave) {
   monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-    validate: true,
     allowComments: true,
     schemaValidation: "error",
     validate: true,
@@ -31,12 +30,13 @@ export function setupEditor(value, schema, onSave) {
   const model = monaco.editor.createModel(
     value,
     "json",
-    monaco.Uri.parse("settings.json")
+    monaco.Uri.parse("settings.json"),
   );
 
   const editor = monaco.editor.create(document.getElementById("container"), {
     automaticLayout: true,
     model: model,
+    // deno-lint-ignore no-window
     theme: window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "vs-dark"
       : "vs-light",
@@ -57,7 +57,7 @@ export function setupEditor(value, schema, onSave) {
     tabSize: 2,
   });
 
-  const save = async () => {
+  const save = () => {
     const markers = monaco.editor
       .getModelMarkers()
       .filter((el) => el.severity >= 8);
@@ -66,7 +66,7 @@ export function setupEditor(value, schema, onSave) {
       alert(
         markers
           .map((el) => `${el.message} - Line ${el.startLineNumber}`)
-          .join("\n")
+          .join("\n"),
       );
 
       return;
@@ -79,7 +79,7 @@ export function setupEditor(value, schema, onSave) {
     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, // Keybinding
     () => {
       save();
-    }
+    },
   );
 
   function validateEditor() {

@@ -1,6 +1,7 @@
-import { computed, toValue, type MaybeRefOrGetter } from "@vue/reactivity";
+import { computed, type MaybeRefOrGetter, toValue } from "@vue/reactivity";
 import { useWindowsIsScreenLocked } from "./useWindowsIsScreenLocked.ts";
 import { useLinuxIsScreenLocked } from "./useLinuxIsScreenLocked.ts";
+import process from "node:process";
 
 type ScreenLockDetectionOptions = { windows: { interval: number } };
 

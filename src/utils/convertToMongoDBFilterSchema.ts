@@ -4,103 +4,103 @@ type Schema =
   | v.AnySchema
   | v.UnknownSchema
   | v.NullableSchema<
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, null>
-    >
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, null>
+  >
   | v.NullishSchema<
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.Default<
       v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.Default<
-        v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-        null | undefined
-      >
+      null | undefined
     >
+  >
   | v.NullSchema<v.ErrorMessage<v.NullIssue> | undefined>
   | v.StringSchema<v.ErrorMessage<v.StringIssue> | undefined>
   | v.BooleanSchema<v.ErrorMessage<v.BooleanIssue> | undefined>
   | v.NumberSchema<v.ErrorMessage<v.NumberIssue> | undefined>
   | v.LiteralSchema<v.Literal, v.ErrorMessage<v.LiteralIssue> | undefined>
   | v.PicklistSchema<
-      v.PicklistOptions,
-      v.ErrorMessage<v.PicklistIssue> | undefined
-    >
+    v.PicklistOptions,
+    v.ErrorMessage<v.PicklistIssue> | undefined
+  >
   | v.EnumSchema<v.Enum, v.ErrorMessage<v.EnumIssue> | undefined>
   | v.VariantSchema<
-      string,
-      v.VariantOptions<string>,
-      v.ErrorMessage<v.VariantIssue> | undefined
-    >
+    string,
+    v.VariantOptions<string>,
+    v.ErrorMessage<v.VariantIssue> | undefined
+  >
   | v.UnionSchema<
-      v.UnionOptions,
-      v.ErrorMessage<v.UnionIssue<v.BaseIssue<unknown>>> | undefined
-    >
+    v.UnionOptions,
+    v.ErrorMessage<v.UnionIssue<v.BaseIssue<unknown>>> | undefined
+  >
   | v.IntersectSchema<
-      v.IntersectOptions,
-      v.ErrorMessage<v.IntersectIssue> | undefined
-    >
+    v.IntersectOptions,
+    v.ErrorMessage<v.IntersectIssue> | undefined
+  >
   | v.ObjectSchema<v.ObjectEntries, v.ErrorMessage<v.ObjectIssue> | undefined>
   | v.ObjectWithRestSchema<
-      v.ObjectEntries,
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.ErrorMessage<v.ObjectWithRestIssue> | undefined
-    >
+    v.ObjectEntries,
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.ErrorMessage<v.ObjectWithRestIssue> | undefined
+  >
   | v.ExactOptionalSchema<
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, undefined>
-    >
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, undefined>
+  >
   | v.OptionalSchema<
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, undefined>
-    >
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, undefined>
+  >
   | v.UndefinedableSchema<
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, undefined>
-    >
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.Default<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>, undefined>
+  >
   | v.StrictObjectSchema<
-      v.ObjectEntries,
-      v.ErrorMessage<v.StrictObjectIssue> | undefined
-    >
+    v.ObjectEntries,
+    v.ErrorMessage<v.StrictObjectIssue> | undefined
+  >
   | v.LooseObjectSchema<
-      v.ObjectEntries,
-      v.ErrorMessage<v.LooseObjectIssue> | undefined
-    >
+    v.ObjectEntries,
+    v.ErrorMessage<v.LooseObjectIssue> | undefined
+  >
   | v.RecordSchema<
-      v.BaseSchema<string, string | number | symbol, v.BaseIssue<unknown>>,
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.ErrorMessage<v.RecordIssue> | undefined
-    >
+    v.BaseSchema<string, string | number | symbol, v.BaseIssue<unknown>>,
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.ErrorMessage<v.RecordIssue> | undefined
+  >
   | v.TupleSchema<v.TupleItems, v.ErrorMessage<v.TupleIssue> | undefined>
   | v.TupleWithRestSchema<
-      v.TupleItems,
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.ErrorMessage<v.TupleWithRestIssue> | undefined
-    >
+    v.TupleItems,
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.ErrorMessage<v.TupleWithRestIssue> | undefined
+  >
   | v.LooseTupleSchema<
-      v.TupleItems,
-      v.ErrorMessage<v.LooseTupleIssue> | undefined
-    >
+    v.TupleItems,
+    v.ErrorMessage<v.LooseTupleIssue> | undefined
+  >
   | v.StrictTupleSchema<
-      v.TupleItems,
-      v.ErrorMessage<v.StrictTupleIssue> | undefined
-    >
+    v.TupleItems,
+    v.ErrorMessage<v.StrictTupleIssue> | undefined
+  >
   | v.ArraySchema<
-      v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
-      v.ErrorMessage<v.ArrayIssue> | undefined
-    >
+    v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>,
+    v.ErrorMessage<v.ArrayIssue> | undefined
+  >
   | v.LazySchema<v.BaseSchema<unknown, unknown, v.BaseIssue<unknown>>>;
 
 type SchemaOrPipe =
   | Schema
   | v.SchemaWithPipe<
-      readonly [
-        Schema,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ...(Schema | v.PipeAction<any, any, v.BaseIssue<unknown>>)[]
-      ]
-    >;
+    readonly [
+      Schema,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...(Schema | v.PipeAction<any, any, v.BaseIssue<unknown>>)[],
+    ]
+  >;
 
 function flattenEntries(
   entries: v.ObjectSchema<any, any>["entries"],
-  prefix = ""
+  prefix = "",
 ): Record<string, unknown> {
   const flat: Record<string, unknown> = {};
   for (const key in entries) {
@@ -111,7 +111,7 @@ function flattenEntries(
       Object.assign(flat, flattenEntries(schema.entries, path));
     } else {
       flat[path] = v.optional(
-        v.union([schema, convertPrimitiveToMongoDBFilterSchema(schema)])
+        v.union([schema, convertPrimitiveToMongoDBFilterSchema(schema)]),
       );
     }
   }
@@ -122,7 +122,7 @@ export function convertObjectToMongoDBFilterSchema(
   schema: v.ObjectSchema<
     v.ObjectEntries,
     v.ErrorMessage<v.ObjectIssue> | undefined
-  >
+  >,
 ) {
   const flatDef = flattenEntries(schema.entries);
 
@@ -141,7 +141,7 @@ export function convertObjectToMongoDBFilterSchema(
 }
 
 export function convertPrimitiveToMongoDBFilterSchema(
-  schema: SchemaOrPipe
+  schema: SchemaOrPipe,
 ): v.GenericSchema {
   if ("pipe" in schema) {
     // Process each item in the pipe
@@ -153,8 +153,7 @@ export function convertPrimitiveToMongoDBFilterSchema(
       return item;
     });
 
-    // Combine all pipe filters with AND logic
-    // @ts-expect-error
+    // @ts-expect-error Combine all pipe filters with AND logic
     return v.pipe(...pipeFilters);
   }
 
@@ -220,7 +219,7 @@ export function convertPrimitiveToMongoDBFilterSchema(
   // Handle arrays with elemMatch and logical operators
   if (schema.type === "array") {
     const elementFilter = convertPrimitiveToMongoDBFilterSchema(
-      schema.item as Schema
+      schema.item as Schema,
     );
     return v.union([
       schema.item,
@@ -243,7 +242,7 @@ export function convertPrimitiveToMongoDBFilterSchema(
     return v.union(
       schema.options.map((el) =>
         convertPrimitiveToMongoDBFilterSchema(el as Schema)
-      )
+      ),
     );
   }
 

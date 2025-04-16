@@ -1,14 +1,14 @@
 import {
   computed,
   effect,
+  type MaybeRefOrGetter,
   onEffectCleanup,
   ref,
   toValue,
-  type MaybeRefOrGetter,
 } from "@vue/reactivity";
+import { execFile } from "node:child_process";
 import os from "node:os";
 import { logger } from "../logger.ts";
-import { execFile } from "node:child_process";
 
 const log = logger.getChild("useWindowsIsScreenLocked");
 
@@ -25,7 +25,7 @@ export const useWindowsIsScreenLocked = (
       log.debug`isLocked: ${isLocked.value}`;
     });
 
-    execFile("query", ["user", os.userInfo().username], (err, data) => {
+    execFile("query", ["user", os.userInfo().username], (_err, data) => {
       const line = data
         .split("\n")
         .map((line) => line.replaceAll(/\s\s+/g, "\t").split("\t"))

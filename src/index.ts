@@ -1,22 +1,24 @@
-import { computed, effectScope, ref } from "@vue/reactivity";
-import { useEventSource } from "./hooks/useEventSource.ts";
+/// <reference types="npm:@types/node" />
+
+import { toJsonSchema } from "@valibot/to-json-schema";
+import { computed, effectScope, ref, watch } from "@vue/reactivity";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { watchEffectScope } from "./utils/watchEffectScope.ts";
-import { useConfigServer } from "./hooks/useConfigServer.ts";
-import { useConfig, type AccessGrantedEvent } from "./hooks/useConfig.ts";
-import { toJsonSchema } from "@valibot/to-json-schema";
+import sift from "sift";
 import JSONC from "tiny-jsonc";
 import { parse } from "valibot";
+import { type AccessGrantedEvent, useConfig } from "./hooks/useConfig.ts";
+import { useConfigServer } from "./hooks/useConfigServer.ts";
+import { useEventSource } from "./hooks/useEventSource.ts";
+import { useIsScreenLocked } from "./hooks/useIsScreenLocked.ts";
+import { useNotifications } from "./hooks/useNotifications.ts";
 import { useRefreshTagList } from "./hooks/useRefreshTagsList.ts";
 import { logger } from "./logger.ts";
-import { registerErrorMonitor } from "./utils/registerErrorMonitor.ts";
-import { useNotifications } from "./hooks/useNotifications.ts";
-import sift from "sift";
-import { createEventHook } from "./utils/createEventHook.ts";
 import { configToString } from "./utils/configToString.ts";
+import { createEventHook } from "./utils/createEventHook.ts";
 import { filterElement } from "./utils/filterElement.ts";
-import { useIsScreenLocked } from "./hooks/useIsScreenLocked.ts";
+import { registerErrorMonitor } from "./utils/registerErrorMonitor.ts";
+import { watchEffectScope } from "./utils/watchEffectScope.ts";
 
 const execFileAsync = promisify(execFile);
 
@@ -45,7 +47,7 @@ scope.run(() => {
   });
 
   const eventSourceLink = computed(() => {
-    let commonTags = [
+    const commonTags = [
       ...config.value.notifications,
       ...config.value.commands,
     ].reduce(
@@ -124,6 +126,18 @@ scope.run(() => {
     windows: { interval: config.value.windowsIsScreenLockedCheckInterval },
   }));
 
+  watch(
+    computed(() => config.value.enabled),
+    (value) => {
+      logger.info(value ? "App is enabled" : "App is disabled");
+    },
+    { immediate: true }
+  );
+
+  watch(isScreenLocked, (value) => {
+    if (value) logger.info("Screen is locked");
+  });
+
   watchEffectScope(
     () => !isScreenLocked.value && config.value.enabled,
     () => {
@@ -143,7 +157,7 @@ scope.run(() => {
       });
 
       onError((error) => {
-        logger.info`An error occured in EventSource: ${error.message}, code: ${error.code}`;
+        logger.info`An error occured in EventSource: ${error.message}`;
         if (!hasError) {
           hasError = true;
 
@@ -152,11 +166,11 @@ scope.run(() => {
         }
       });
 
-      const handler = async (data: AccessGrantedEvent) => {
+      const handler = (data: AccessGrantedEvent) => {
         try {
           const eventTagsSet = new Set(data.tags);
 
-          await Promise.all(
+          Promise.all(
             configOptimized.value.commands
               .filter((commandSetting) =>
                 filterElement(commandSetting, data, eventTagsSet)
@@ -164,6 +178,9 @@ scope.run(() => {
               .map((commandSetting) =>
                 execFileAsync(commandSetting.file, commandSetting.args)
               )
+          ).catch(
+            (e) =>
+              logger.error`An error happend during execution of commands: ${e}`
           );
 
           for (const notifySetting of configOptimized.value.notifications) {

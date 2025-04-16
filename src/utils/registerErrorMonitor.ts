@@ -1,15 +1,20 @@
-import { execFileSync } from "child_process";
-import { logger } from "../logger.ts";
+import { dispose } from "@logtape/logtape";
+import { execFileSync } from "node:child_process";
 import os from "node:os";
+import process from "node:process";
+import { logger } from "../logger.ts";
 import { flattenError } from "./flattenError.ts";
 
 export const registerErrorMonitor = () => {
-  process.on("uncaughtExceptionMonitor", async (error, origin) => {
-    logger.fatal`UncaughtException(${origin}):\n${error}`;
-    if (process.platform === "win32")
+  globalThis.addEventListener("unhandledrejection", async (error) => {
+    logger.fatal`Uncaught Exception:\n${error.reason}`;
+    if (process.platform === "win32") {
       execFileSync("msg", [os.userInfo().username], {
-        input: `RIT.Alert proccess exited: \n${flattenError(error)}`,
+        input: `RIT.Alert proccess ${error.cancelable} exited: \n${flattenError(
+          error.reason
+        )}`,
       });
+    }
 
     if (process.platform === "linux") {
       execFileSync("zenity", [
@@ -17,8 +22,12 @@ export const registerErrorMonitor = () => {
         "--title",
         "RIT.Alert Error",
         "--text",
-        `RIT.Alert proccess exited: \n${flattenError(error)}`,
+        `RIT.Alert proccess exited: \n${flattenError(error.reason)}`,
       ]);
     }
+
+    error.preventDefault();
+    await dispose();
+    process.exit(1);
   });
 };

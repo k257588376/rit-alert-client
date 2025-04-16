@@ -1,4 +1,4 @@
-import { computed, toValue, type MaybeRefOrGetter } from "@vue/reactivity";
+import { computed, type MaybeRefOrGetter, toValue } from "@vue/reactivity";
 import * as v from "valibot";
 import { convertObjectToMongoDBFilterSchema } from "../utils/convertToMongoDBFilterSchema.ts";
 import JSONC from "tiny-jsonc";
@@ -30,25 +30,25 @@ const getConfigSchema = <T extends string>(tagsArray: T[] | null) => {
   });
 
   const mongodbLikeFilter = convertObjectToMongoDBFilterSchema(
-    AccessGrantedEventSchema
+    AccessGrantedEventSchema,
   );
 
   const commonFields = {
     name: v.pipe(
       v.string(),
       v.description(
-        "Имя условия. Будет показываться в уведомлении о конфигурации при запуске"
-      )
+        "Имя условия. Будет показываться в уведомлении о конфигурации при запуске",
+      ),
     ),
     tags: v.pipe(
       v.optional(v.array(tagType)),
-      v.description("Список тегов, которые должны быть в событии")
+      v.description("Список тегов, которые должны быть в событии"),
     ),
     filter: v.pipe(
       v.optional(mongodbLikeFilter),
       v.description(
-        "Фильтр события в синтаксисе фильтров MongoDB. https://www.mongodb.com/docs/manual/tutorial/query-documents/"
-      )
+        "Фильтр события в синтаксисе фильтров MongoDB. https://www.mongodb.com/docs/manual/tutorial/query-documents/",
+      ),
     ),
   } as const;
 
@@ -56,33 +56,33 @@ const getConfigSchema = <T extends string>(tagsArray: T[] | null) => {
     enabled: v.pipe(
       v.optional(v.boolean(), true),
       v.description(
-        "Если включено, программа подписывается на события, показывает уведомления и выполняет команды. \nПо умолчанию: true"
-      )
+        "Если включено, программа подписывается на события, показывает уведомления и выполняет команды. \nПо умолчанию: true",
+      ),
     ),
     serverUrl: v.pipe(
       v.string(),
       v.url(),
-      v.description("Адрес сервера, на события которого надо подписаться")
+      v.description("Адрес сервера, на события которого надо подписаться"),
     ),
     showConfigOnStartup: v.pipe(
       v.optional(v.boolean(), false),
       v.description(
-        "Показывать ли уведомление с настройками программы при запуске?\nПо умолчанию: false"
-      )
+        "Показывать ли уведомление с настройками программы при запуске?\nПо умолчанию: false",
+      ),
     ),
     windowsIsScreenLockedCheckInterval: v.pipe(
       v.optional(v.number(), 1000),
       v.description(
-        "Интервал в миллисекундах вызова функции проверки заблокирован ли экран на Windows. \nПо умолчанию: 1000 мс"
-      )
+        "Интервал в миллисекундах вызова функции проверки заблокирован ли экран на Windows. \nПо умолчанию: 1000 мс",
+      ),
     ),
     notifications: v.pipe(
       v.array(
         v.strictObject({
           ...commonFields,
-        })
+        }),
       ),
-      v.description("Условия при которых показываются уведомления.")
+      v.description("Условия при которых показываются уведомления."),
     ),
     commands: v.array(
       v.strictObject({
@@ -90,9 +90,9 @@ const getConfigSchema = <T extends string>(tagsArray: T[] | null) => {
         file: v.pipe(v.string(), v.description("Путь к исполнямому файлу")),
         args: v.pipe(
           v.array(v.string()),
-          v.description("Массив аргументов при выполнении исполнямого файла")
+          v.description("Массив аргументов при выполнении исполнямого файла"),
         ),
-      })
+      }),
     ),
   });
 

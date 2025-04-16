@@ -1,16 +1,15 @@
 import {
   effect,
+  type MaybeRefOrGetter,
   onScopeDispose,
   ref,
   toRef,
   toValue,
   watch,
-  type MaybeRefOrGetter,
 } from "@vue/reactivity";
-import { createEventHook } from "../utils/createEventHook.ts";
-import { ErrorEvent, EventSource } from "eventsource";
 import { logger } from "../logger.ts";
-import type { AccessGrantedEvent } from './useConfig.ts';
+import { createEventHook } from "../utils/createEventHook.ts";
+import type { AccessGrantedEvent } from "./useConfig.ts";
 
 const log = logger.getChild("useEventSource");
 

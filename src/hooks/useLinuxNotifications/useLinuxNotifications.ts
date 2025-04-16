@@ -1,9 +1,8 @@
-import { execFile, execFileSync } from "child_process";
+import { onScopeDispose } from "@vue/reactivity";
+import { execFile, execFileSync, spawn } from "node:child_process";
+import { createInterface } from "node:readline/promises";
 import semver from "semver";
 import { logger } from "../../logger.ts";
-import { createInterface } from "node:readline/promises";
-import { spawn } from "node:child_process";
-import { onScopeDispose } from "@vue/reactivity";
 
 const log = logger.getChild("useLinuxNotifications");
 
@@ -31,7 +30,7 @@ export const useLinuxNotifications = () => {
   const vOutput = execFileSync("notify-send", ["-v"]).toString("utf8");
   log.debug`Output of 'notify-send -v': ${vOutput}`;
 
-  const v = vOutput.split(" ")[0];
+  const v = vOutput.split(" ")[1];
 
   if (!semver.valid(v)) {
     log.fatal`Invalid semver of 'notify-send': ${v}`;

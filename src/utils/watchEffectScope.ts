@@ -1,21 +1,21 @@
 import {
-  type MaybeRefOrGetter,
   type EffectScope,
-  watch,
+  effectScope,
+  type MaybeRefOrGetter,
   toRef,
   toValue,
-  effectScope,
+  watch,
 } from "@vue/reactivity";
 
 export function watchEffectScope(
   triggerRef: MaybeRefOrGetter<boolean>,
-  callback: () => void
+  callback: () => void,
 ): void {
   let scope: EffectScope | null = null;
 
   watch(
     toRef(triggerRef),
-    (newValue: boolean) => {
+    () => {
       if (toValue(triggerRef)) {
         // Start a new effectScope if it's true
         scope = effectScope();
@@ -28,6 +28,6 @@ export function watchEffectScope(
         }
       }
     },
-    { immediate: true }
+    { immediate: true },
   );
 }

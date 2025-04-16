@@ -1,14 +1,14 @@
 import {
-  type MaybeRefOrGetter,
   type EffectScope,
-  watch,
   effectScope,
+  type MaybeRefOrGetter,
+  watch,
 } from "@vue/reactivity";
 
 export function watchArrayEffectScope<T, K>(
   arrayRef: MaybeRefOrGetter<T[]>,
   getKey: (item: T) => K,
-  callback: (item: T) => void
+  callback: (item: T) => void,
 ): void {
   const scopes = new Map<K, EffectScope>();
 
@@ -35,6 +35,6 @@ export function watchArrayEffectScope<T, K>(
         }
       }
     },
-    { deep: true }
+    { deep: true },
   );
 }

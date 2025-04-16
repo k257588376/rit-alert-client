@@ -1,6 +1,7 @@
+import process from "node:process";
 import {
-  useLinuxNotifications,
   type LinuxNotification,
+  useLinuxNotifications,
 } from "./useLinuxNotifications/useLinuxNotifications.ts";
 import {
   useWindowsNotifications,
