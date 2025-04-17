@@ -16,7 +16,7 @@ import { useRefreshTagList } from "./hooks/useRefreshTagsList.ts";
 import { logger } from "./logger.ts";
 import { configToString } from "./utils/configToString.ts";
 import { createEventHook } from "./utils/createEventHook.ts";
-import { filterElement } from "./utils/filterElement.ts";
+import { isSatisfiesElementFilter } from "./utils/filterElement.ts";
 import { registerErrorMonitor } from "./utils/registerErrorMonitor.ts";
 import { watchEffectScope } from "./utils/watchEffectScope.ts";
 
@@ -173,7 +173,7 @@ scope.run(() => {
           Promise.all(
             configOptimized.value.commands
               .filter((commandSetting) =>
-                filterElement(commandSetting, data, eventTagsSet)
+                isSatisfiesElementFilter(commandSetting, data, eventTagsSet)
               )
               .map((commandSetting) =>
                 execFileAsync(commandSetting.file, commandSetting.args)
@@ -184,7 +184,7 @@ scope.run(() => {
           );
 
           for (const notifySetting of configOptimized.value.notifications) {
-            if (filterElement(notifySetting, data, eventTagsSet)) {
+            if (isSatisfiesElementFilter(notifySetting, data, eventTagsSet)) {
               const message = `${
                 data.door.side === "Enter" ? "Вошел" : "Вышел"
               } ${data.user.firstName} ${data.user.lastName} через '${
