@@ -134,9 +134,9 @@ sudo apt-get install wmctrl
 - POST http://localhost:4579/config/enabled - включить/отключить программу
   отправив в теле запроса `true` или `false`
 
-### Автозагрузка
+## Автозагрузка
 
-#### Windows
+### Windows
 
 Скачайте файл
 [start.ps1](https://github.com/k257588376/rit-alert-client/blob/main/start.ps1).
@@ -156,7 +156,7 @@ sudo apt-get install wmctrl
 Завершить процесс можно через Диспетчер задач по PID процесса, который можно
 найти в логах, или по поиску 'rit-alert.exe'.
 
-#### Linux
+### Linux
 
 1. Скопируйте исполняемый файл для Linux в `/usr/local/bin/rit-alert`
 
