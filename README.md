@@ -92,6 +92,9 @@ RIT.Alert Server.
 }
 ```
 
+Пример скрипта AutoHotkey для переключения окон лежит в папке
+[ahk](https://github.com/k257588376/rit-alert-client/tree/main/ahk) репозитория.
+
 #### Linux, X11
 
 [wmctrl](https://linux.die.net/man/1/wmctrl) - это команда, которая используется
