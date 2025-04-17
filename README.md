@@ -149,7 +149,7 @@ sudo apt-get install wmctrl
    вручную в папку
    `%AppData%/Microsoft/Windows/Главное меню/Программы/Автозагрузка`)
 2. Создайте ярлык к
-   `"C:\Program Files\PowerShell\7\pwsh.exe" "<путь к проекту>\start.ps1"`
+   `"C:\Program Files\PowerShell\7\pwsh.exe" "<путь к папке>\start.ps1"`
 
 Вывод программы можно увидеть в файле `output.log` в папке с файлом.
 
@@ -269,4 +269,4 @@ true - включает, false - выключает соответственно
 - Чтобы отредактировать конфигурацию через браузер, необходим интернет для
   загрузки редактора (подключение к [esm.sh](https://esm.sh/))
 - Проект мигрировал с Node.js на Deno, чтобы иметь возможность сделать single
-  executable file.
+  executable application.
