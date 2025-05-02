@@ -51,12 +51,10 @@ export const useEventSource = (url: MaybeRefOrGetter<string>) => {
     es.value.addEventListener("open", () => triggerConnected());
   });
 
-  const { on: onError, trigger: triggerError } = createEventHook<ErrorEvent>();
+  const { on: onError, trigger: triggerError } = createEventHook<Event>();
   effect(() => {
     es.value.addEventListener("error", (event) => {
-      if (event instanceof ErrorEvent) {
-        triggerError(event);
-      }
+      triggerError(event);
     });
   });
 

@@ -157,7 +157,7 @@ scope.run(() => {
       });
 
       onError((error) => {
-        logger.info`An error occured in EventSource: ${error.message}`;
+        logger.info`An error occured in EventSource: ${error}`;
         if (!hasError) {
           hasError = true;
 
