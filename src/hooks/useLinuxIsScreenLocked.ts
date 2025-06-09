@@ -1,7 +1,7 @@
 import { ref } from "@vue/reactivity";
-import { logger } from "../logger.ts";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline/promises";
+import { logger } from "../logger.ts";
 
 const log = logger.getChild("useLinuxIsScreenLocked");
 

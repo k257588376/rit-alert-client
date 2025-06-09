@@ -2,6 +2,7 @@
 
 import { toJsonSchema } from "@valibot/to-json-schema";
 import { computed, effectScope, ref, watch } from "@vue/reactivity";
+import { template } from "es-toolkit/compat";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import sift from "sift";
@@ -43,6 +44,21 @@ scope.run(() => {
         tags: el.tags ? new Set(el.tags) : null,
         filter: el.filter ? sift.default(el.filter) : null,
       })),
+      notificationTemplate: {
+        title: config.value.notificationTemplate.title
+          ? template(config.value.notificationTemplate.title, {
+              variable: "data",
+            })
+          : undefined,
+        message: template(config.value.notificationTemplate.message, {
+          variable: "data",
+        }),
+        appName: config.value.notificationTemplate.appName
+          ? template(config.value.notificationTemplate.appName, {
+              variable: "data",
+            })
+          : undefined,
+      },
     };
   });
 
@@ -185,15 +201,20 @@ scope.run(() => {
 
           for (const notifySetting of configOptimized.value.notifications) {
             if (isSatisfiesElementFilter(notifySetting, data, eventTagsSet)) {
-              const message = `${
-                data.door.side === "Enter" ? "Вошел" : "Вышел"
-              } ${data.user.firstName} ${data.user.lastName} через '${
-                data.door.name
-              }'`;
+              const title =
+                configOptimized.value.notificationTemplate.title?.(data);
+              const message =
+                configOptimized.value.notificationTemplate.message(data);
+              const appName =
+                configOptimized.value.notificationTemplate.appName?.(data);
 
               notify({
-                windows: { message },
-                linux: { summary: "Событие", description: message },
+                windows: { title, message, attribution: appName },
+                linux: {
+                  summary: title ?? "Событие",
+                  description: message,
+                  appName,
+                },
               });
               break;
             }

@@ -17,8 +17,8 @@ await configure({
     main: args["log-file"]
       ? getRotatingFileSink("rit-alert.log", { maxFiles: 5 })
       : getConsoleSink({
-          formatter: process.stdout.isTTY ? ansiColorFormatter : undefined,
-        }),
+        formatter: process.stdout.isTTY ? ansiColorFormatter : undefined,
+      }),
   },
   loggers: [
     {

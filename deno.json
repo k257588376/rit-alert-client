@@ -12,6 +12,7 @@
     "@valibot/to-json-schema": "npm:@valibot/to-json-schema@^1.0.0",
     "@vue/reactivity": "npm:@vue/reactivity@^3.5.13",
     "devalue": "npm:devalue@^5.1.1",
+    "es-toolkit": "npm:es-toolkit@^1.39.3",
     "hono": "npm:hono@^4.7.5",
     "jsonc-parser": "npm:jsonc-parser@^3.3.1",
     "node-notifier": "npm:node-notifier@^10.0.1",

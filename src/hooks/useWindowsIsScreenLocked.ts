@@ -13,7 +13,7 @@ import { logger } from "../logger.ts";
 const log = logger.getChild("useWindowsIsScreenLocked");
 
 export const useWindowsIsScreenLocked = (
-  checkInterval: MaybeRefOrGetter<number>
+  checkInterval: MaybeRefOrGetter<number>,
 ) => {
   const isLocked = ref(false);
   const isUserLoggedOut = ref(false);
@@ -33,8 +33,8 @@ export const useWindowsIsScreenLocked = (
         .at(1);
 
       // >e.kulbeda console 1 Active none 27.03.2025 9:36
-      isUserLoggedOut.value =
-        line == null || (line[3] !== "Active" && line[3] !== "Активно");
+      isUserLoggedOut.value = line == null ||
+        (line[3] !== "Active" && line[3] !== "Активно");
 
       log.debug`isUserLoggedOut: ${isLocked.value}`;
     });

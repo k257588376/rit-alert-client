@@ -10,9 +10,11 @@ export const registerErrorMonitor = () => {
     logger.fatal`Uncaught Exception:\n${error.reason}`;
     if (process.platform === "win32") {
       execFileSync("msg", [os.userInfo().username], {
-        input: `RIT.Alert proccess ${error.cancelable} exited: \n${flattenError(
-          error.reason
-        )}`,
+        input: `RIT.Alert proccess ${error.cancelable} exited: \n${
+          flattenError(
+            error.reason,
+          )
+        }`,
       });
     }
 

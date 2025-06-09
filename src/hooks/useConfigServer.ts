@@ -66,14 +66,14 @@ export const useConfigServer = ({
             <div id="container"></div>
 
             <script>
-              globalThis.schema = ${raw(uneval(toValue(configJsonSchema)))};
-              globalThis.value = ${raw(uneval(toValue(configValue)))};
-              globalThis.sseUrl = ${raw(uneval(toValue(sseUrl)))};
+            globalThis.schema = ${raw(uneval(toValue(configJsonSchema)))};
+            globalThis.value = ${raw(uneval(toValue(configValue)))};
+            globalThis.sseUrl = ${raw(uneval(toValue(sseUrl)))};
             </script>
             <script type="module" src="./static/index.js"></script>
           </body>
         </html>
-      `
+      `,
     );
   });
 
@@ -107,23 +107,23 @@ export const useConfigServer = ({
             <div id="container"></div>
 
             <script>
-              globalThis.schema = ${raw(uneval(toValue(eventJsonSchema)))};
-              globalThis.value = ${raw(
-                uneval(
-                  await readFile(
-                    path.resolve(
-                      import.meta.dirname!,
-                      "../default-test-event.jsonc"
-                    ),
-                    { encoding: "utf8" }
-                  )
-                )
-              )};
+            globalThis.schema = ${raw(uneval(toValue(eventJsonSchema)))};
+            globalThis.value = ${raw(
+          uneval(
+            await readFile(
+              path.resolve(
+                import.meta.dirname!,
+                "../default-test-event.jsonc",
+              ),
+              { encoding: "utf8" },
+            ),
+          ),
+        )};
             </script>
             <script type="module" src="./static/tester.js"></script>
           </body>
         </html>
-      `
+      `,
     );
   });
 
@@ -209,7 +209,7 @@ export const useConfigServer = ({
       isDir,
       root: path.resolve(import.meta.dirname!, "../html"),
       rewriteRequestPath: (path) => path.replace(/^\/static/, ""),
-    })
+    }),
   );
 
   app.post("/test", async (c) => {

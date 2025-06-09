@@ -6,11 +6,11 @@ import process from "node:process";
 type ScreenLockDetectionOptions = { windows: { interval: number } };
 
 export const useIsScreenLocked = (
-  options: MaybeRefOrGetter<ScreenLockDetectionOptions>
+  options: MaybeRefOrGetter<ScreenLockDetectionOptions>,
 ) => {
   if (process.platform === "win32") {
     return useWindowsIsScreenLocked(
-      computed(() => toValue(options).windows.interval)
+      computed(() => toValue(options).windows.interval),
     );
   }
 
@@ -19,6 +19,6 @@ export const useIsScreenLocked = (
   }
 
   throw new Error(
-    `Unsupported platform for screen lock detection: ${process.platform}`
+    `Unsupported platform for screen lock detection: ${process.platform}`,
   );
 };

@@ -1,22 +1,20 @@
 import { onScopeDispose } from "@vue/reactivity";
 import { spawn } from "node:child_process";
+import { copyFileSync, mkdtempSync } from "node:fs";
 import { EOL, tmpdir } from "node:os";
+import path from "node:path";
 import { type Toast, toXmlString } from "powertoast";
 import { logger } from "../../logger.ts";
-import path from "node:path";
-import { copyFileSync, mkdtempSync } from "node:fs";
 
 const log = logger.getChild("useNotifications");
 
-export type WindowsNotificationOptions =
-  & Omit<
-    Toast["options"],
-    "expiration"
-  >
-  & {
-    // true by default
-    transient?: boolean;
-  };
+export type WindowsNotificationOptions = Omit<
+  Toast["options"],
+  "expiration"
+> & {
+  // true by default
+  transient?: boolean;
+};
 
 export const useWindowsNotifications = () => {
   const directory = mkdtempSync(path.join(tmpdir(), "rit-alert-"));
@@ -36,12 +34,12 @@ export const useWindowsNotifications = () => {
   toast.stdin.setDefaultEncoding("utf8");
   toast.stdout.addListener(
     "data",
-    (buffer) => log.info`Chunk: ${buffer.toString()}`,
+    (buffer) => log.info`Chunk: ${buffer.toString()}`
   );
 
   toast.stderr.addListener(
     "data",
-    (buffer) => log.error`Error: ${buffer.toString()}`,
+    (buffer) => log.error`Error: ${buffer.toString()}`
   );
 
   onScopeDispose(() => {
@@ -54,9 +52,9 @@ export const useWindowsNotifications = () => {
       toXmlString(options) +
         EOL +
         new Date(
-          options.transient !== false ? Date.now() + 10_000 : 0,
+          options.transient !== false ? Date.now() + 10_000 : 0
         ).toISOString() +
-        EOL,
+        EOL
     );
   };
 };

@@ -31,6 +31,6 @@ export const useNotifications = () => {
   }
 
   throw new Error(
-    `Unsupported platform for notifications: ${process.platform}`
+    `Unsupported platform for notifications: ${process.platform}`,
   );
 };

@@ -1,7 +1,8 @@
 import { computed, type MaybeRefOrGetter, toValue } from "@vue/reactivity";
+import process from "node:process";
+import JSONC from "tiny-jsonc";
 import * as v from "valibot";
 import { convertObjectToMongoDBFilterSchema } from "../utils/convertToMongoDBFilterSchema.ts";
-import JSONC from "tiny-jsonc";
 import { usePersisedJSONCConfig } from "./usePersisedJSONCConfig.ts";
 
 const getConfigSchema = <T extends string>(tagsArray: T[] | null) => {
@@ -27,6 +28,21 @@ const getConfigSchema = <T extends string>(tagsArray: T[] | null) => {
     user: AccessGrantedEventUserSchema,
     door: AccessGrantedEventDoorSchema,
     tags: v.array(tagType),
+  });
+
+  const NotificationTemplateSchema = v.object({
+    title: v.optional(
+      v.string(),
+      process.platform === "win32" ? undefined : "Событие",
+    ),
+    message: v.optional(
+      v.string(),
+      '<%= data.door.side === "Enter" ? "Вошел" : "Вышел" %> ${data.user.firstName} ${data.user.lastName} через \'${data.door.name}\'',
+    ),
+    appName: v.optional(
+      v.string(),
+      process.platform === "win32" ? undefined : "RIT.Alert",
+    ),
   });
 
   const mongodbLikeFilter = convertObjectToMongoDBFilterSchema(
@@ -93,6 +109,15 @@ const getConfigSchema = <T extends string>(tagsArray: T[] | null) => {
           v.description("Массив аргументов при выполнении исполнямого файла"),
         ),
       }),
+    ),
+    notificationTemplate: v.pipe(
+      v.optional(
+        NotificationTemplateSchema,
+        v.getDefaults(NotificationTemplateSchema),
+      ),
+      v.description(
+        "Syntax: https://es-toolkit.slash.page/reference/compat/string/template.html#template",
+      ),
     ),
   });
 
